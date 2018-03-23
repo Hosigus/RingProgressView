@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RingProgressView">
+        <!--层数-->
+        <attr name="ringCount" format="integer" />
+        <!--层高-->
+        <attr name="ringHeight" format="dimension" />
+        <!--层间隔-->
+        <attr name="ringMargin" format="dimension" />
+        <!--环上百分比提示-->
+        <attr name="nendProgressHint" format="boolean" />
+        <!--环下对颜色说明-->
+        <attr name="needRingExplain" format="boolean" />
+    </declare-styleable>
+</resources>
