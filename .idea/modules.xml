@@ -3,8 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RingProgressView.iml" filepath="$PROJECT_DIR$/RingProgressView.iml" />
-      <module fileurl="file://$PROJECT_DIR$/example/app.iml" filepath="$PROJECT_DIR$/example/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib/ringprogressview.iml" filepath="$PROJECT_DIR$/lib/ringprogressview.iml" />
+      <module fileurl="file://D:\Android_Workplace\RingProgressView\example\app.iml" filepath="D:\Android_Workplace\RingProgressView\example\app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/example/example.iml" filepath="$PROJECT_DIR$/example/example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
+      <module fileurl="file://D:\Android_Workplace\RingProgressView\lib\ringprogressview.iml" filepath="D:\Android_Workplace\RingProgressView\lib\ringprogressview.iml" />
     </modules>
   </component>
 </project>

@@ -1,28 +1,15 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'com.github.dcendents.android-maven'
-def siteUrl = 'https://github.com/Hosigus/RingProgressView'
-def gitUrl = 'https://github.com/Hosigus/RingProgressView.git'
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-version = "1.0"
-group = "com.hosigus"
 
 android {
     compileSdkVersion 26
-
-
-
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -41,37 +28,135 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
 
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'RingProgressView'
+
+    publishedGroupId = 'com.hosigus'
+    artifact = 'RingProgressView'
+
+    siteUrl = 'https://github.com/Hosigus/RingProgressView'
+    gitUrl = 'https://github.com/Hosigus/RingProgressView.git'
+    libraryVersion = '1.0.0'
+    libraryName = 'RingProgressView'
+    libraryDescription = '环形进度图'
+
+    developerId = 'hosigus'
+    developerName = 'hosigus'
+    developerEmail = '973367033@qq.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = publishedGroupId                               // Maven Group ID for the artifact
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                groupId publishedGroupId
+                artifactId artifact
+
+                // Add your description here
+                name libraryName
+                description libraryDescription
+                url siteUrl
+
+                // Set your license
+                licenses {
+                    license {
+                        name licenseName
+                        url licenseUrl
+                    }
+                }
+                developers {
+                    developer {
+                        id developerId
+                        name developerName
+                        email developerEmail
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+
+                }
+            }
+        }
+    }
+}
+
+apply plugin: 'com.jfrog.bintray'
+
+version = libraryVersion
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+android.libraryVariants.all { variant ->
+    println variant.javaCompile.classpath.files
+    if(variant.name == 'release') {
+        task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+            // title = ''
+            // description = ''
+            source = variant.javaCompile.source
+            classpath = files(variant.javaCompile.classpath.files, project.android.getBootClasspath())
+            options {
+                encoding "utf-8"
+                links "http://docs.oracle.com/javase/7/docs/api/"
+                linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
+            }
+            exclude '**/BuildConfig.java'
+            exclude '**/R.java'
+        }
+        task("javadoc${variant.name.capitalize()}Jar", type: Jar, dependsOn: "generate${variant.name.capitalize()}Javadoc") {
+            classifier = 'javadoc'
+            from tasks.getByName("generate${variant.name.capitalize()}Javadoc").destinationDir
+        }
+        artifacts {
+            archives tasks.getByName("javadoc${variant.name.capitalize()}Jar")
+        }
+    }
+}
+
+// Bintray
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 bintray {
-
     user = properties.getProperty("bintray.user")
-
     key = properties.getProperty("bintray.apikey")
 
     configurations = ['archives']
-
     pkg {
-
-        repo = "RingProgressView"
-
-        name = " RingProgressView"
-
+        repo = bintrayRepo
+        name = bintrayName
+        desc = libraryDescription
         websiteUrl = siteUrl
-
         vcsUrl = gitUrl
-
-        userOrg = 'RedRock'
-
+        licenses = allLicenses
         publish = true
-
+        publicDownloadNumbers = true
         version {
-            name = '1.0'
-            released = new Date()
-            vcsTag = 'v1.0'
-            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+            desc = libraryDescription
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("bintray.gpg.password")
+                //Optional. The passphrase for GPG signing'
+            }
         }
-
     }
-
-    configurations = ['archives']
-
 }
