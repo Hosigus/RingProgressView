@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -42,24 +41,40 @@ import java.util.Locale;
 
 public class RingProgressView extends View {
     private int ringCount;
+    /**
+     * RingHeight 单环高度
+     */
     private int ringHeight;
+    /**
+     * RingMargin 环间距
+     */
     private int ringMargin;
     private int maxSize;
 
+    /**
+     * needProgressHint: 设置是否显示环上百分比提示
+     * needRingExplain: 设置是否显示底部对颜色的说明
+     */
     private boolean isHeightSeted, isMarginSeted,needProgressHint, needRingExplain;
 
     private List<Paint> ringPList,strokePList, fillPList, hintPList;
+    /**
+     * 进度 , float 0-1
+     */
     private List<Float> progressList;
+    /**
+     * 底部对颜色的说明,应当尽量简短
+     */
     private List<String> explainList;
 
     private Path path = new Path();
 
-    public RingProgressView(Context context, @Nullable AttributeSet attrs) {
+    public RingProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public RingProgressView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public RingProgressView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
@@ -290,6 +305,7 @@ public class RingProgressView extends View {
     public void reDraw(){
         reDraw(null);
     }
+
     /**
      * 设置层数后将重置画笔和值
      * @param ringCount 新层数
@@ -304,10 +320,6 @@ public class RingProgressView extends View {
         return ringCount;
     }
 
-    /**
-     * RingHeight 单环高度
-     * RingMargin 环间距
-     */
     public int getRingHeight() {
         return ringHeight;
     }
@@ -324,21 +336,22 @@ public class RingProgressView extends View {
         isMarginSeted = true;
         initSize();
     }
+
     /**
-     * 取消设置RingHeight或RingMargin
+     * 取消设置RingHeight
      */
     public void setRingHeightFree(){
         isHeightSeted = false;
         initSize();
     }
+    /**
+     * 取消设置RingMargin
+     */
     public void setRingMarginFree(){
         isMarginSeted = false;
         initSize();
     }
 
-    /**
-     * 进度 , float 0-1
-     */
     public List<Float> getProgressList() {
         return progressList;
     }
@@ -349,9 +362,6 @@ public class RingProgressView extends View {
         progressList.set(position, progress);
     }
 
-    /**
-     * 底部对颜色的说明,应当尽量简短
-     */
     public void setExplainList(List<String> explainList) {
         this.explainList = explainList;
     }
@@ -359,29 +369,21 @@ public class RingProgressView extends View {
         explainList.set(position, explain);
     }
 
-    /**
-     * 设置是否显示底部对颜色的说明
-     */
     public boolean isNeedRingExplain() {
         return needRingExplain;
     }
     public void setNeedRingExplain(boolean needRingExplain) {this.needRingExplain = needRingExplain;}
 
-    /**
-     * 设置是否显示环上百分比提示
-     */
     public boolean isNeedProgressHint() {
         return needProgressHint;
     }
     public void setNeedProgressHint(boolean needProgressHint) {this.needProgressHint = needProgressHint;}
 
-    /**
-     * 设置画笔：
-     * RingP - 背景环
-     * StrokeP - 进度环外部
-     * FillP - 进度环内部
-     * HintP - 提示文本
-     */
+//      设置画笔：
+//      RingP - 背景环
+//      StrokeP - 进度环外部
+//      FillP - 进度环内部
+//      HintP - 提示文本
     public void setRingPList(List<Paint> ringPList) {
         this.ringPList = ringPList;
     }
@@ -405,13 +407,12 @@ public class RingProgressView extends View {
     }
     public void setProgressP(int position,Paint progressP) {
         hintPList.set(position, progressP);}
-    /**
-     * 设置画笔颜色：
-     * RingP - 背景环
-     * StrokeP - 进度环外部
-     * FillP - 进度环内部
-     * HintP - 提示文本
-     */
+
+//      设置画笔颜色：
+//      RingP - 背景环
+//      StrokeP - 进度环外部
+//      FillP - 进度环内部
+//      HintP - 提示文本
     public void setRingColor(int position,int color) {
         ringPList.get(position).setColor(color);
     }
